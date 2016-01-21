@@ -5,11 +5,12 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
-import course.bo.Comment;
-import course.bo.Post;
 import org.bson.Document;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class BlogPostDAO {
     MongoCollection<Document> postsCollection;
@@ -34,7 +35,6 @@ public class BlogPostDAO {
         return postsCollection.find()
                 .sort(Sorts.descending("date"))
                 .into(new ArrayList<>());
-
     }
 
 
@@ -80,10 +80,6 @@ public class BlogPostDAO {
         return permalink;
     }
 
-
-    // White space to protect the innocent
-
-
     // Append a comment to a blog post
     public void addPostComment(final String name, final String email, final String body,
                                final String permalink) {
@@ -95,7 +91,6 @@ public class BlogPostDAO {
         }
 
         postsCollection.findOneAndUpdate(post, new Document("$push", new Document("comments", comment)));
-        // todo  XXX
         // Hints:
         // - email is optional and may come in NULL. Check for that.
         // - best solution uses an update command to the database and a suitable
